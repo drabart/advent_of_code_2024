@@ -64,6 +64,7 @@ func part2(lists [][]int) {
 		}
 
 		// Problem lies between unsafe_index - 1 and unsafe_index, so we try 2 configurations
+		// we also check 0, as it might flip the direction
 		if is_safe_without_index(level, 0) {
 			safe += 1
 			continue
