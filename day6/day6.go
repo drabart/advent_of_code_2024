@@ -158,7 +158,7 @@ func part2(board [][]Piece, p player) {
 		}
 	}
 
-	fmt.Printf("Part 1 solution: %d\n", found)
+	fmt.Printf("Part 2 solution: %d\n", found)
 }
 
 func main() {
