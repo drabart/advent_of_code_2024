@@ -33,6 +33,11 @@ var skip map[int]map[int]int = make(map[int]map[int]int)
 var skip_step = 5
 
 func compute_ss(a, step int) map[int]int {
+	skip_map, found := skip[a]
+	if step == skip_step && found == true {
+		return skip_map
+	}
+
 	r2 := map[int]int{a: 1}
 	rc := make(map[int]int)
 
@@ -73,11 +78,7 @@ func solve(r2 map[int]int, n int) int {
 		}
 
 		for k, v := range r2 {
-			skip_map, found := skip[k]
-
-			if !found {
-				skip_map = compute_ss(k)
-			}
+			skip_map := compute_ss(k, min(n, skip_step))
 
 			for kk, vvv := range skip_map {
 				rc[kk] += vvv * v
@@ -85,6 +86,8 @@ func solve(r2 map[int]int, n int) int {
 		}
 
 		r2, rc = rc, r2
+
+		n -= skip_step
 	}
 
 	sum := 0
