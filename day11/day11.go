@@ -125,7 +125,7 @@ func part3(rocks []int) {
 		r2[r] += 1
 	}
 
-	fmt.Printf("Part 3 solution: %d\n", solve(r2, 2000))
+	fmt.Printf("Part 3 solution: %d\n", solve(r2, 20000))
 }
 
 func main() {
