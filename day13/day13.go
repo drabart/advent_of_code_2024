@@ -28,20 +28,18 @@ type machine struct {
 }
 
 func solve_machine(m machine) int {
-	for at := 0; ; at++ {
-		if at*m.a.x > m.prize.x {
-			break
-		}
-		bt := m.prize.x - m.a.x*at
-		if bt%m.b.x != 0 {
-			continue
-		}
-		bt /= m.b.x
-		if m.a.y*at+m.b.y*bt == m.prize.y {
-			return at*3 + bt
-		}
+	up := m.prize.y*m.b.x - m.prize.x*m.b.y
+	down := m.b.x*m.a.y - m.a.x*m.b.y
+	if up%down != 0 {
+		return 0
 	}
-	return 0
+	a := up / down
+	up2 := m.prize.x - a*m.a.x
+	if up2%m.b.x != 0 {
+		return 0
+	}
+	b := up2 / m.b.x
+	return a*3 + b
 }
 
 func part1(machines []machine) {
