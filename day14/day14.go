@@ -88,7 +88,7 @@ func part2(machines []machine) {
 		machines[i].add_v(12)
 	}
 
-	for true {
+	for x := 0; x <= 101; x++ {
 		s++
 		t := make([][]string, h)
 		for i := 0; i < h; i++ {
