@@ -68,6 +68,11 @@ func (p *pair) add_d(p2 Direction) {
 	p.y += p2[1]
 }
 
+func (p *pair) sub_d(p2 Direction) {
+	p.x -= p2[0]
+	p.y -= p2[1]
+}
+
 func (p *pair) mul(p2 int) {
 	p.x *= p2
 	p.y *= p2
@@ -149,6 +154,35 @@ func part1(board [][]rune, p player) {
 	fmt.Printf("Part 1 solution: %d\n", res)
 }
 
+var vv map[pair]bool = map[pair]bool{}
+var revdir = map[Direction]Direction{North: South, South: North, East: West, West: East}
+var dirs = []Direction{North, East, South, West}
+
+func dfs(board [][]rune, dist map[player]int, pos player, val int) {
+	if !vv[pos.p] {
+		vv[pos.p] = true
+	}
+
+	p2 := pos
+	p2.p.add_d(p2.d)
+	if board[p2.p.x][p2.p.y] != '#' {
+		cost, _ := dist[p2]
+
+		if cost == val-1 {
+			dfs(board, dist, p2, val-1)
+		}
+	}
+
+	for _, d := range dirs {
+		p2 = pos
+		p2.d = d
+		cost, _ := dist[p2]
+		if cost == val-1000 {
+			dfs(board, dist, p2, val-1000)
+		}
+	}
+}
+
 func part2(board [][]rune, p player) {
 	visited := map[player]int{}
 
@@ -158,10 +192,8 @@ func part2(board [][]rune, p player) {
 	visited[p] = 0
 	pq.Push(&pq_e{value: p, priority: 0})
 
-	dirs := []Direction{North, East, South, West}
-
 	res := 0
-	e := pair{}
+	e := player{}
 
 	for len(pq) > 0 {
 		pla := heap.Pop(&pq).(*pq_e).value
@@ -169,12 +201,12 @@ func part2(board [][]rune, p player) {
 		if board[pla.p.x][pla.p.y] == 'E' {
 			if res == 0 {
 				res = visited[pla]
+				e = pla
 			}
-			e = pla.p
 		}
 
 		p2 := pla
-		p2.p.add_d(p2.d)
+		p2.p.sub_d(p2.d)
 
 		if board[p2.p.x][p2.p.y] != '#' {
 			cost, vis := visited[p2]
@@ -200,7 +232,9 @@ func part2(board [][]rune, p player) {
 		}
 	}
 
-	fmt.Printf("Part 1 solution: %d\n", res)
+	dfs(board, visited, e, res)
+
+	fmt.Printf("Part 2 solution: %d\n", len(vv))
 }
 
 func main() {
