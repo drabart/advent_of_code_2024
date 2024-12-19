@@ -139,20 +139,6 @@ func part1(board [][]rune, p player, e pair) {
 		}
 	}
 
-	for i := range board {
-		for j := range board[i] {
-			_, b := visited[player{pair{i, j}}]
-			if b {
-				fmt.Print("a")
-			} else if board[i][j] == 1 {
-				fmt.Print("#")
-			} else {
-				fmt.Print(".")
-			}
-		}
-		fmt.Println()
-	}
-
 	fmt.Printf("Part 1 solution: %d\n", res)
 }
 
@@ -271,17 +257,6 @@ func main() {
 		if v > 0 {
 			board[y][x] = 1
 		}
-	}
-
-	for i := range board {
-		for j := range board[i] {
-			if board[i][j] == 1 {
-				fmt.Print("#")
-			} else {
-				fmt.Print(".")
-			}
-		}
-		fmt.Println()
 	}
 
 	part1(board, p, e)
